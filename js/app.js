@@ -127,155 +127,36 @@
     });
   }
 
-  function loadImage(url) {
-    return new Promise(function (resolve, reject) {
-      var image = new Image();
+  function getHtml2Canvas() {
+    if (typeof window.html2canvas === "function") {
+      return Promise.resolve(window.html2canvas);
+    }
 
-      if (/^https?:\/\//i.test(url)) {
-        image.crossOrigin = "anonymous";
+    return loadScript(
+      "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js",
+    ).then(function () {
+      if (typeof window.html2canvas !== "function") {
+        throw new Error("html2canvas did not initialize correctly.");
       }
 
-      image.onload = function () {
-        resolve(image);
-      };
-      image.onerror = function () {
-        reject(new Error("Failed to load image: " + url));
-      };
-      image.src = url;
+      return window.html2canvas;
     });
-  }
-
-  function wrapTextLines(context, text, maxWidth) {
-    var words = sanitizeText(text).split(" ");
-    var lines = [];
-    var currentLine = "";
-
-    if (!words[0]) {
-      return lines;
-    }
-
-    words.forEach(function (word) {
-      var nextLine = currentLine ? currentLine + " " + word : word;
-
-      if (
-        currentLine &&
-        context.measureText(nextLine).width > maxWidth
-      ) {
-        lines.push(currentLine);
-        currentLine = word;
-        return;
-      }
-
-      currentLine = nextLine;
-    });
-
-    if (currentLine) {
-      lines.push(currentLine);
-    }
-
-    return lines;
-  }
-
-  function drawCenteredTextBlock(context, options) {
-    var lines = wrapTextLines(context, options.text, options.maxWidth);
-    var lineHeight = options.fontSize * options.lineHeight;
-    var longestLineWidth = 0;
-    var startY;
-
-    if (!lines.length) {
-      return;
-    }
-
-    lines.forEach(function (line) {
-      longestLineWidth = Math.max(
-        longestLineWidth,
-        context.measureText(line).width,
-      );
-    });
-
-    startY =
-      options.top +
-      options.fontSize +
-      ((lines.length - 1) * lineHeight) / -2;
-
-    lines.forEach(function (line, index) {
-      context.fillText(line, options.centerX, startY + index * lineHeight);
-    });
-
-    context.beginPath();
-    context.moveTo(options.centerX - longestLineWidth / 2, startY + lines.length * lineHeight);
-    context.lineTo(options.centerX + longestLineWidth / 2, startY + lines.length * lineHeight);
-    context.lineWidth = options.underlineWidth;
-    context.strokeStyle = options.underlineColor;
-    context.stroke();
   }
 
   async function buildInvitationCanvas(config) {
-    var imageElement = config.previewRoot.querySelector("img");
-    var invitationType = config.previewRoot.dataset.invitationType;
-    var tableValue = config.tableInput ? sanitizeText(config.tableInput.value) : "";
-    var backgroundImage;
-    var canvas;
-    var context;
-    var text;
-    var centerX = 620;
-
-    if (!imageElement) {
-      throw new Error("Invitation background image not found.");
-    }
+    var html2canvas;
+    var pixelRatio;
 
     await document.fonts.ready;
-    backgroundImage = await loadImage(imageElement.currentSrc || imageElement.src);
+    html2canvas = await getHtml2Canvas();
+    pixelRatio = Math.max(window.devicePixelRatio || 1, 2);
 
-    canvas = document.createElement("canvas");
-    canvas.width = backgroundImage.naturalWidth || 1240;
-    canvas.height = backgroundImage.naturalHeight || 1748;
-    context = canvas.getContext("2d");
-
-    context.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
-    context.textAlign = "center";
-    context.textBaseline = "alphabetic";
-    text = formatGuestName(config.titleInput.value, config.nameInput.value);
-
-    if (invitationType === "homecoming") {
-      context.fillStyle = "#71716f";
-      context.font = "italic 600 42px 'Cormorant Garamond', serif";
-
-      drawCenteredTextBlock(context, {
-        text: text,
-        centerX: centerX,
-        top: canvas.height * 0.58,
-        maxWidth: canvas.width * 0.822,
-        fontSize: 42,
-        lineHeight: 1.18,
-        underlineWidth: 1.5,
-        underlineColor: "rgba(121, 112, 85, 0.62)",
-      });
-
-      return canvas;
-    }
-
-    context.fillStyle = "#4f5749";
-    context.font = "600 35px 'Cormorant Garamond', serif";
-
-    drawCenteredTextBlock(context, {
-      text: text,
-      centerX: centerX,
-      top: canvas.height * 0.4725,
-      maxWidth: canvas.width * 0.76,
-      fontSize: 35,
-      lineHeight: 1.18,
-      underlineWidth: 1.5,
-      underlineColor: "rgba(121, 112, 85, 0.62)",
+    return html2canvas(config.previewRoot, {
+      backgroundColor: "#ffffff",
+      useCORS: true,
+      scale: pixelRatio,
+      logging: false,
     });
-
-    if (tableValue) {
-      context.fillStyle = "#7b6d4b";
-      context.font = "700 24px 'Cormorant Garamond', serif";
-      context.fillText(tableValue, canvas.width * 0.568, canvas.height * 0.842);
-    }
-
-    return canvas;
   }
 
   async function downloadPDF(config) {
