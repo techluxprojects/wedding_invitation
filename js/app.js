@@ -143,20 +143,40 @@
     });
   }
 
+  function createExportPreview(previewRoot) {
+    var exportRoot = previewRoot.cloneNode(true);
+
+    exportRoot.classList.add("invitation-preview--export");
+    exportRoot.setAttribute("aria-hidden", "true");
+    exportRoot.style.pointerEvents = "none";
+
+    document.body.appendChild(exportRoot);
+    return exportRoot;
+  }
+
   async function buildInvitationCanvas(config) {
     var html2canvas;
-    var pixelRatio;
+    var exportRoot;
+    var canvas;
 
     await document.fonts.ready;
     html2canvas = await getHtml2Canvas();
-    pixelRatio = Math.max(window.devicePixelRatio || 1, 2);
+    exportRoot = createExportPreview(config.previewRoot);
 
-    return html2canvas(config.previewRoot, {
-      backgroundColor: "#ffffff",
-      useCORS: true,
-      scale: pixelRatio,
-      logging: false,
-    });
+    try {
+      canvas = await html2canvas(exportRoot, {
+        backgroundColor: "#ffffff",
+        useCORS: true,
+        scale: 2,
+        width: 1240,
+        height: 1748,
+        logging: false,
+      });
+    } finally {
+      exportRoot.remove();
+    }
+
+    return canvas;
   }
 
   async function downloadPDF(config) {

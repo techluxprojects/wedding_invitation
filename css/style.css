@@ -249,6 +249,18 @@ h1 {
   object-fit: cover;
 }
 
+.invitation-preview--export {
+  position: fixed;
+  top: -99999px;
+  left: -99999px;
+  width: 1240px;
+  height: 1748px;
+  aspect-ratio: auto;
+  border-radius: 0;
+  box-shadow: none;
+  overflow: hidden;
+}
+
 .guest-overlay,
 .table-overlay {
   position: absolute;
@@ -308,6 +320,24 @@ h1 {
   font-size: clamp(14px, 1.5vw, 24px);
   font-weight: 700;
   color: #7b6d4b;
+}
+
+.invitation-preview--export .guest-overlay--wedding {
+  top: 47.25%;
+  width: 76%;
+  font-size: 35px;
+}
+
+.invitation-preview--export .guest-overlay--homecoming {
+  top: 58%;
+  width: 82.2%;
+  font-size: 42px;
+}
+
+.invitation-preview--export .table-overlay {
+  top: 82.9%;
+  width: 12%;
+  font-size: 24px;
 }
 
 @media (max-width: 980px) {
