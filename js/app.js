@@ -161,14 +161,14 @@
 
     try {
       return await html2canvas(exportRoot, {
-        scale: 4,
+        scale: 2,
         useCORS: true,
         backgroundColor: "#ffffff",
         logging: false,
-        width: 500,
-        height: 700,
-        windowWidth: 500,
-        windowHeight: 700,
+        width: 1240,
+        height: 1748,
+        windowWidth: 1240,
+        windowHeight: 1748,
       });
     } finally {
       exportRoot.remove();
@@ -190,11 +190,11 @@
     var imageData = canvas.toDataURL("image/png");
     var pdf = new JsPdf({
       orientation: "portrait",
-      unit: "in",
-      format: [5, 7],
+      unit: "mm",
+      format: "a4",
     });
 
-    pdf.addImage(imageData, "PNG", 0, 0, 5, 7);
+    pdf.addImage(imageData, "PNG", 0, 0, 210, 297);
     pdf.save(
       generateSafeFilename(
         config.previewRoot.dataset.filenamePrefix,
