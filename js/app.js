@@ -175,7 +175,6 @@
         onclone: function (clonedDocument) {
           var style = clonedDocument.createElement("style");
           style.textContent = `
-            * { margin: 0; padding: 0; }
             body { margin: 0; padding: 0; }
           `;
           clonedDocument.head.appendChild(style);
