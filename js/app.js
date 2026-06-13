@@ -171,6 +171,15 @@
         width: 1240,
         height: 1748,
         logging: false,
+        imageTimeout: 0,
+        onclone: function (clonedDocument) {
+          var style = clonedDocument.createElement("style");
+          style.textContent = `
+            * { margin: 0; padding: 0; }
+            body { margin: 0; padding: 0; }
+          `;
+          clonedDocument.head.appendChild(style);
+        },
       });
     } finally {
       exportRoot.remove();
@@ -199,28 +208,34 @@
       orientation: "portrait",
       unit: "mm",
       format: "a4",
+      compress: true,
     });
+
     var pageWidth = pdf.internal.pageSize.getWidth();
     var pageHeight = pdf.internal.pageSize.getHeight();
-    var cardRatio = canvas.width / canvas.height;
-    var renderWidth = pageWidth;
-    var renderHeight = renderWidth / cardRatio;
+    var canvasAspect = canvas.width / canvas.height;
 
-    if (renderHeight > pageHeight) {
-      renderHeight = pageHeight;
-      renderWidth = renderHeight * cardRatio;
+    // Use full page width
+    var pdfWidth = pageWidth;
+    var pdfHeight = pdfWidth / canvasAspect;
+
+    // If height exceeds page, scale down
+    if (pdfHeight > pageHeight) {
+      pdfHeight = pageHeight;
+      pdfWidth = pdfHeight * canvasAspect;
     }
 
-    var x = (pageWidth - renderWidth) / 2;
-    var y = (pageHeight - renderHeight) / 2;
+    // Center on page (minimal margins for precise printing)
+    var x = (pageWidth - pdfWidth) / 2;
+    var y = (pageHeight - pdfHeight) / 2;
 
     pdf.addImage(
       imageData,
       "PNG",
       x,
       y,
-      renderWidth,
-      renderHeight,
+      pdfWidth,
+      pdfHeight,
       undefined,
       "FAST",
     );
