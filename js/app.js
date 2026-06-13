@@ -156,40 +156,27 @@
   }
 
   async function buildInvitationCanvas(previewRoot) {
-    var html2canvas;
-    var exportRoot;
-    var canvas;
-
-    await document.fonts.ready;
-    html2canvas = await getHtml2Canvas();
-    exportRoot = createExportCard(previewRoot);
+    var html2canvas = await getHtml2Canvas();
+    var exportRoot = createExportCard(previewRoot);
 
     try {
-      canvas = await html2canvas(exportRoot, {
+      return await html2canvas(exportRoot, {
         scale: 4,
         useCORS: true,
-        backgroundColor: null,
+        backgroundColor: "#ffffff",
         logging: false,
         width: 500,
         height: 700,
         windowWidth: 500,
         windowHeight: 700,
-        scrollX: 0,
-        scrollY: 0,
       });
     } finally {
       exportRoot.remove();
     }
-
-    return canvas;
   }
 
   async function downloadPDF(config) {
     var guestName = sanitizeText(config.nameInput.value);
-    var JsPdf;
-    var canvas;
-    var imageData;
-    var pdf;
 
     if (!guestName) {
       window.alert("Please enter guest name.");
@@ -198,10 +185,10 @@
 
     updatePreviewText(config);
 
-    JsPdf = await getJsPdf();
-    canvas = await buildInvitationCanvas(config.previewRoot);
-    imageData = canvas.toDataURL("image/png");
-    pdf = new JsPdf({
+    var JsPdf = await getJsPdf();
+    var canvas = await buildInvitationCanvas(config.previewRoot);
+    var imageData = canvas.toDataURL("image/png");
+    var pdf = new JsPdf({
       orientation: "portrait",
       unit: "in",
       format: [5, 7],
@@ -241,7 +228,6 @@
 
     config.titleInput.addEventListener("change", syncPreview);
     config.nameInput.addEventListener("input", syncPreview);
-
     if (config.tableInput) {
       config.tableInput.addEventListener("input", syncPreview);
     }
