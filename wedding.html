@@ -19,7 +19,7 @@
         <h1>Customize Guest Details</h1>
         <p class="section-copy">
           Enter the guest information below. The invitation preview updates
-          instantly and the PDF export captures only the card.
+          instantly and the PDF export downloads the same 5 x 7 card.
         </p>
 
         <form class="invitation-form" data-invitation-form>
@@ -69,17 +69,32 @@
       </section>
 
       <section class="preview-card">
-        <div
-          class="invitation-preview invitation-preview--wedding"
-          data-invitation-type="wedding"
-          data-filename-prefix="wedding"
-          data-preview-root
-        >
-          <img src="assets/wedding.png" alt="Wedding invitation template" />
-          <div class="guest-overlay guest-overlay--wedding">
-            <span class="guest-overlay__text" data-preview-name></span>
+        <div class="preview-wrapper">
+          <div
+            id="captureArea"
+            class="invitation-card wedding-card"
+            data-invitation-type="wedding"
+            data-filename-prefix="wedding"
+            data-preview-root
+          >
+            <img
+              class="template-img"
+              src="assets/wedding.png"
+              alt="Wedding invitation template"
+            />
+            <div class="guest-name guest-name--wedding">
+              <span
+                id="guestNamePreview"
+                class="guest-name__text"
+                data-preview-name
+              ></span>
+            </div>
+            <div
+              id="tableNoPreview"
+              class="table-number table-number--wedding"
+              data-preview-table
+            ></div>
           </div>
-          <div class="table-overlay" data-preview-table></div>
         </div>
       </section>
     </main>

@@ -89,6 +89,7 @@
       config.titleInput.value,
       config.nameInput.value,
     );
+
     config.nameOutput.textContent = formattedName;
 
     if (config.tableOutput && config.tableInput) {
@@ -117,7 +118,7 @@
     }
 
     return loadScript(
-      "https://unpkg.com/jspdf@2.5.1/dist/jspdf.umd.min.js",
+      "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js",
     ).then(function () {
       if (!window.jspdf || typeof window.jspdf.jsPDF !== "function") {
         throw new Error("jsPDF did not initialize correctly.");
@@ -143,10 +144,10 @@
     });
   }
 
-  function createExportPreview(previewRoot) {
+  function createExportCard(previewRoot) {
     var exportRoot = previewRoot.cloneNode(true);
 
-    exportRoot.classList.add("invitation-preview--export");
+    exportRoot.classList.add("invitation-card--export");
     exportRoot.setAttribute("aria-hidden", "true");
     exportRoot.style.pointerEvents = "none";
 
@@ -154,32 +155,27 @@
     return exportRoot;
   }
 
-  async function buildInvitationCanvas(config) {
+  async function buildInvitationCanvas(previewRoot) {
     var html2canvas;
     var exportRoot;
     var canvas;
 
     await document.fonts.ready;
     html2canvas = await getHtml2Canvas();
-    exportRoot = createExportPreview(config.previewRoot);
+    exportRoot = createExportCard(previewRoot);
 
     try {
       canvas = await html2canvas(exportRoot, {
-        backgroundColor: "#ffffff",
+        scale: 4,
         useCORS: true,
-        scale: 2,
-        width: 1240,
-        height: 1748,
+        backgroundColor: null,
         logging: false,
-        imageTimeout: 0,
-        onclone: function (clonedDocument) {
-          var style = clonedDocument.createElement("style");
-          style.textContent = `
-            * { margin: 0; padding: 0; }
-            body { margin: 0; padding: 0; }
-          `;
-          clonedDocument.head.appendChild(style);
-        },
+        width: 500,
+        height: 700,
+        windowWidth: 500,
+        windowHeight: 700,
+        scrollX: 0,
+        scrollY: 0,
       });
     } finally {
       exportRoot.remove();
@@ -192,6 +188,8 @@
     var guestName = sanitizeText(config.nameInput.value);
     var JsPdf;
     var canvas;
+    var imageData;
+    var pdf;
 
     if (!guestName) {
       window.alert("Please enter guest name.");
@@ -201,44 +199,15 @@
     updatePreviewText(config);
 
     JsPdf = await getJsPdf();
-    canvas = await buildInvitationCanvas(config);
-
-    var imageData = canvas.toDataURL("image/png");
-    var pdf = new JsPdf({
+    canvas = await buildInvitationCanvas(config.previewRoot);
+    imageData = canvas.toDataURL("image/png");
+    pdf = new JsPdf({
       orientation: "portrait",
-      unit: "mm",
-      format: "a4",
-      compress: true,
+      unit: "in",
+      format: [5, 7],
     });
 
-    var pageWidth = pdf.internal.pageSize.getWidth();
-    var pageHeight = pdf.internal.pageSize.getHeight();
-    var canvasAspect = canvas.width / canvas.height;
-
-    // Use full page width
-    var pdfWidth = pageWidth;
-    var pdfHeight = pdfWidth / canvasAspect;
-
-    // If height exceeds page, scale down
-    if (pdfHeight > pageHeight) {
-      pdfHeight = pageHeight;
-      pdfWidth = pdfHeight * canvasAspect;
-    }
-
-    // Center on page (minimal margins for precise printing)
-    var x = (pageWidth - pdfWidth) / 2;
-    var y = (pageHeight - pdfHeight) / 2;
-
-    pdf.addImage(
-      imageData,
-      "PNG",
-      x,
-      y,
-      pdfWidth,
-      pdfHeight,
-      undefined,
-      "FAST",
-    );
+    pdf.addImage(imageData, "PNG", 0, 0, 5, 7);
     pdf.save(
       generateSafeFilename(
         config.previewRoot.dataset.filenamePrefix,
@@ -266,9 +235,9 @@
       downloadButton: document.querySelector("[data-download-pdf]"),
     };
 
-    var syncPreview = function () {
+    function syncPreview() {
       updatePreviewText(config);
-    };
+    }
 
     config.titleInput.addEventListener("change", syncPreview);
     config.nameInput.addEventListener("input", syncPreview);

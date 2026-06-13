@@ -6,7 +6,6 @@
   --text: #353a31;
   --muted: #6b6f65;
   --accent: #5e7158;
-  --accent-soft: #d8c6a3;
   --shadow: 0 24px 60px rgba(68, 65, 48, 0.14);
   --radius: 28px;
 }
@@ -233,62 +232,67 @@ h1 {
   justify-content: center;
 }
 
-.invitation-preview {
+.preview-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.invitation-card {
   position: relative;
-  width: min(100%, 720px);
-  aspect-ratio: 1240 / 1748;
-  border-radius: 24px;
+  width: 500px;
+  height: 700px;
+  flex: 0 0 auto;
+  aspect-ratio: 5 / 7;
   overflow: hidden;
   background: #fff;
+  border-radius: 24px;
   box-shadow: 0 20px 50px rgba(53, 58, 49, 0.18);
 }
 
-.invitation-preview img {
+.template-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
+  display: block;
 }
 
-.invitation-preview--export {
+.invitation-card--export {
   position: fixed;
-  top: -99999px;
-  left: -99999px;
-  width: 1240px;
-  height: 1748px;
-  aspect-ratio: auto;
+  top: -10000px;
+  left: -10000px;
+  width: 500px;
+  height: 700px;
+  max-width: none;
   border-radius: 0;
   box-shadow: none;
-  overflow: visible;
   margin: 0;
-  padding: 0;
 }
 
-.guest-overlay,
-.table-overlay {
+.guest-name,
+.table-number {
   position: absolute;
+  text-align: center;
+}
+
+.guest-name {
   left: 50%;
   transform: translateX(-50%);
-  width: 76%;
-  text-align: center;
-  margin: 0;
-  padding: 0;
-}
-
-.guest-overlay {
-  color: #505345;
+  color: #4f5749;
   font-family: "Cormorant Garamond", serif;
   line-height: 1.18;
-  text-wrap: balance;
 }
 
-.guest-overlay__text {
+.guest-name__text {
   display: inline-block;
   max-width: 100%;
-  padding: 0 10px 18px;
-  margin: 0;
+  padding: 0 10px 14px;
 }
 
-.guest-overlay__text::after {
+.guest-name__text::after {
   content: "";
   display: block;
   width: 100%;
@@ -296,54 +300,36 @@ h1 {
   border-bottom: 1.5px solid rgba(121, 112, 85, 0.62);
 }
 
-.guest-overlay--wedding {
+.guest-name--wedding {
   top: 47.25%;
-  font-size: clamp(16px, 2.3vw, 35px);
+  width: 76%;
+  font-size: clamp(22px, 2rem, 28px);
   font-weight: 600;
-  letter-spacing: 0.06em;
-  color: #4f5749;
+  letter-spacing: 0.04em;
 }
 
-.guest-overlay--homecoming {
+.guest-name--homecoming {
   top: 58%;
   width: 82.2%;
-  font-size: clamp(22px, 2.8vw, 42px);
+  font-size: clamp(22px, 2rem, 28px);
   font-weight: 600;
   font-style: italic;
   color: #71716f;
 }
 
-.table-overlay {
-  top: 82.9%;
+.table-number {
+  top: 83.2%;
   left: 56.8%;
+  transform: translateX(-50%);
   width: 12%;
   min-height: 2%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: "Cormorant Garamond", serif;
-  font-size: clamp(14px, 1.5vw, 24px);
+  font-size: clamp(16px, 1.35rem, 20px);
   font-weight: 700;
   color: #7b6d4b;
-}
-
-.invitation-preview--export .guest-overlay--wedding {
-  top: 826px;
-  width: 76%;
-  font-size: 35px;
-}
-
-.invitation-preview--export .guest-overlay--homecoming {
-  top: 1014px;
-  width: 82.2%;
-  font-size: 42px;
-}
-
-.invitation-preview--export .table-overlay {
-  top: 1449px;
-  width: 12%;
-  font-size: 24px;
-  left: 50%;
 }
 
 @media (max-width: 980px) {
@@ -382,26 +368,7 @@ h1 {
     min-height: 190px;
   }
 
-  .invitation-preview {
-    width: 100%;
-    border-radius: 18px;
-  }
-
-  .guest-overlay--wedding {
-    top: 47.8%;
-    width: 80%;
-    font-size: clamp(16px, 4vw, 28px);
-  }
-
-  .guest-overlay--homecoming {
-    top: 55%;
-    width: 84%;
-    font-size: clamp(18px, 4.2vw, 32px);
-  }
-
-  .table-overlay {
-    top: 83.8%;
-    width: 16%;
-    font-size: clamp(12px, 2.4vw, 20px);
+  .preview-wrapper {
+    justify-content: flex-start;
   }
 }
