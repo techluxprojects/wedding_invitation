@@ -1,33 +1,268 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Invitation PDF Generator</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Great+Vibes&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-  <main class="home-shell">
-    <section class="hero-card">
-      <p class="eyebrow">Wedding Invitation PDF Generator</p>
-      <h1>Create Print-Ready Invitations in Your Browser</h1>
-      <p class="hero-copy">
-        Choose an invitation type, enter the guest details, preview the final card live, and export it as a PDF ready for GitHub Pages hosting.
-      </p>
-      <div class="selection-grid">
-        <a class="selection-card" href="wedding.html">
-          <span class="selection-label">Wedding Invitation</span>
-          <span class="selection-hint">Portrait floral template with guest name and optional table number.</span>
-        </a>
-        <a class="selection-card" href="homecomming.html">
-          <span class="selection-label">Homecoming Invitation</span>
-          <span class="selection-hint">Portrait homecoming template with guest name and elegant centered typography.</span>
-        </a>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#080704" />
+    <meta
+      name="description"
+      content="The wedding invitation of Thilini Kaushalya & Nimash Karunathilake."
+    />
+    <title>Thilini & Nimash | Wedding Invitation</title>
+
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="invitation-app" aria-label="Wedding invitation">
+      <!-- Opening experience -->
+      <section
+        id="doorScene"
+        class="door-scene"
+        aria-label="Open the wedding invitation"
+      >
+        <div class="ambient-glow"></div>
+        <div class="door-copy">
+          <p class="eyebrow">You are warmly invited</p>
+          <h1>Thilini <span>&</span> Nimash</h1>
+          <p class="door-subtitle">Tap to open your invitation</p>
+        </div>
+
+        <button
+          id="openInvitationBtn"
+          class="open-door-btn"
+          type="button"
+          aria-label="Open wedding invitation"
+        >
+          <span class="door-knob"></span>
+          <span>Open Invitation</span>
+        </button>
+
+        <div class="doors" aria-hidden="true">
+          <div class="door door-left">
+            <div class="door-panel panel-a"></div>
+            <div class="door-panel panel-b"></div>
+            <div class="door-panel panel-c"></div>
+            <div class="door-goldwork"></div>
+            <div class="door-handle"></div>
+          </div>
+          <div class="door door-right">
+            <div class="door-panel panel-a"></div>
+            <div class="door-panel panel-b"></div>
+            <div class="door-panel panel-c"></div>
+            <div class="door-goldwork"></div>
+            <div class="door-handle"></div>
+          </div>
+        </div>
+        <div class="door-floor"></div>
+        <div class="bell-visual bell-one">◌</div>
+        <div class="bell-visual bell-two">◌</div>
+      </section>
+
+      <!-- Main invitation -->
+      <section id="invitationScene" class="invitation-scene d-none">
+        <div class="sparkles" aria-hidden="true"></div>
+
+        <nav class="topbar container-fluid px-3 px-md-4 pt-3">
+          <div class="ms-auto d-flex align-items-center gap-2">
+            <!--<button
+              id="musicBtn"
+              class="glass-btn"
+              type="button"
+              aria-pressed="false"
+              title="Toggle music"
+            >
+              <span id="musicIcon">♪</span>
+              <span class="d-none d-sm-inline">Music</span>
+            </button>
+            <a class="glass-btn text-decoration-none" href="admin.html"
+              >Admin</a
+            >
+          
+             <button
+              class="glass-btn"
+              type="button"
+              data-bs-toggle="modal"
+              data-bs-target="#rsvpModal"
+            >
+              RSVP
+            </button> -->
+          </div>
+        </nav>
+
+        <div class="container py-4 py-md-5">
+          <div class="row justify-content-center">
+            <div class="col-12 col-xl-10">
+              <div class="intro-card text-center">
+                <p class="eyebrow mb-2">Together with our parents</p>
+                <h2>Request the honour of your presence</h2>
+                <p class="intro-line">to celebrate the marriage of</p>
+                <div class="names-display">
+                  Thilini Kaushalya <span>&amp;</span> Nimash Karunathilake
+                </div>
+                <p class="intro-note mb-0">
+                  21 October 2026 · 10:30 AM - 4:00 PM
+                </p>
+              </div>
+
+              <div class="card-shell mx-auto mt-4 mt-md-5">
+                <img
+                  src="assets/invitation-card.png"
+                  class="invitation-card-image"
+                  alt="Wedding invitation for Thilini Kaushalya and Nimash Karunathilake"
+                />
+                <div
+                  class="card-click-hotspot"
+                  role="button"
+                  tabindex="0"
+                  aria-label="Open directions to Resheen Hotel and Banquets"
+                  data-location-link
+                ></div>
+                <div
+                  class="card-location-badge"
+                  data-location-link
+                  role="button"
+                  tabindex="0"
+                >
+                  <span class="location-dot"></span>
+                  <span>Get directions</span>
+                </div>
+              </div>
+
+              <div class="after-card mt-4 mt-md-5">
+                <div class="row g-3 justify-content-center">
+                  <div class="col-12 col-md-4">
+                    <button
+                      class="action-card w-100"
+                      type="button"
+                      data-location-link
+                    >
+                      <span class="action-icon">⌖</span>
+                      <span>
+                        <strong>Location</strong>
+                        <small>Resheen Hotel & Banquets</small>
+                      </span>
+                    </button>
+                  </div>
+                  <!-- <div class="col-12 col-md-4">
+                     <button
+                      class="action-card w-100"
+                      type="button"
+                      data-bs-toggle="modal"
+                      data-bs-target="#rsvpModal"
+                    >
+                      <span class="action-icon">♥</span>
+                      <span>
+                        <strong>RSVP</strong>
+                        <small>Let us know you are coming</small>
+                      </span>
+                    </button> 
+                  </div>-->
+                </div>
+
+                <p class="footer-note mt-4 mb-0">With love, Thilini & Nimash</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- RSVP modal -->
+    <div
+      class="modal fade"
+      id="rsvpModal"
+      tabindex="-1"
+      aria-labelledby="rsvpModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rsvp-modal-content">
+          <div class="modal-header border-0">
+            <div>
+              <p class="eyebrow mb-1">Your response</p>
+              <h2 class="modal-title" id="rsvpModalLabel">Wedding RSVP</h2>
+            </div>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body pt-0">
+            <form id="rsvpForm">
+              <div class="mb-3">
+                <label for="guestSelect" class="form-label"
+                  >Your invitation name</label
+                >
+                <select id="guestSelect" class="form-select">
+                  <option value="">Select a guest from the list</option>
+                </select>
+                <div class="form-text mt-2">
+                  Or type your name manually below if you are not on the list.
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="guestNameInput" class="form-label"
+                  >Type your name</label
+                >
+                <input
+                  id="guestNameInput"
+                  type="text"
+                  class="form-control"
+                  placeholder="Example: Kevin"
+                />
+              </div>
+
+              <div class="mb-3">
+                <label for="eventType" class="form-label">Function</label>
+                <select id="eventType" class="form-select" required>
+                  <option value="Wedding Day">Wedding Day</option>
+                  <option value="Homecoming">Homecoming</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
+              <div class="mb-3">
+                <label for="attendance" class="form-label"
+                  >Will you attend?</label
+                >
+                <select id="attendance" class="form-select" required>
+                  <option value="">Select response</option>
+                  <option value="attending">Yes, I will attend</option>
+                  <option value="not_attending">Sorry, I cannot attend</option>
+                </select>
+              </div>
+
+              <div
+                id="rsvpStatus"
+                class="rsvp-status d-none"
+                role="status"
+              ></div>
+
+              <button
+                id="submitRsvpBtn"
+                class="btn btn-gold w-100"
+                type="submit"
+              >
+                Confirm RSVP
+              </button>
+            </form>
+          </div>
+        </div>
       </div>
-    </section>
-  </main>
-</body>
+    </div>
+
+    <div id="toast" class="site-toast" role="status" aria-live="polite"></div>
+    <audio id="bgMusic" src="assets/audio.mp3" loop preload="auto"></audio>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+  </body>
 </html>
